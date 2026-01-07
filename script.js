@@ -91,57 +91,59 @@ hoverTriggers.forEach(trigger => {
         cursor.classList.remove('grow');
     });
 });
-// --- Carousel Logic ---
+// --- Carousel Logic (Dots Version) ---
 
 const track = document.querySelector('.carousel-track');
 const slides = Array.from(track.children);
-const nextButton = document.querySelector('.next-btn');
-const prevButton = document.querySelector('.prev-btn');
+const dotsContainer = document.querySelector('.carousel-dots');
 
 let slideIndex = 0;
-const slideWidth = slides[0].getBoundingClientRect().width;
 
-// Arrange slides next to one another
-// (This is handled by CSS flex, but this ensures logical sizing)
-const setSlidePosition = (slide, index) => {
-    slide.style.left = slideWidth * index + 'px';
-};
+// 1. Create Dots based on number of images
+slides.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (index === 0) dot.classList.add('active-dot'); // Activate first dot
+    
+    // Make dot clickable
+    dot.addEventListener('click', () => {
+        moveToSlide(index);
+        resetTimer();
+    });
+    
+    dotsContainer.appendChild(dot);
+});
+
+const dots = Array.from(dotsContainer.children);
 
 const moveToSlide = (index) => {
-    // Check bounds
+    // Check bounds (Looping logic)
     if (index < 0) index = slides.length - 1;
     if (index >= slides.length) index = 0;
     
     // Move track
     track.style.transform = 'translateX(-' + (index * 100) + '%)';
     slideIndex = index;
+
+    // Update Dot Styling
+    dots.forEach(d => d.classList.remove('active-dot'));
+    dots[index].classList.add('active-dot');
 };
 
-// Button Listeners
-nextButton.addEventListener('click', () => {
-    moveToSlide(slideIndex + 1);
-    resetTimer(); // Reset auto-play timer on manual click
-});
-
-prevButton.addEventListener('click', () => {
-    moveToSlide(slideIndex - 1);
-    resetTimer();
-});
-
-// Auto Rotation (Every 4 seconds)
+// Auto Rotation (Every 3 seconds)
 let autoSlide = setInterval(() => {
     moveToSlide(slideIndex + 1);
-}, 4000);
+}, 3000);
 
-// Function to reset timer when user interacts
+// Reset timer on interaction
 function resetTimer() {
     clearInterval(autoSlide);
     autoSlide = setInterval(() => {
         moveToSlide(slideIndex + 1);
-    }, 4000);
+    }, 3000);
 }
 
-// Pause rotation on hover (Better User Experience)
+// Pause rotation when user hovers over the image
 const carouselContainer = document.querySelector('.carousel-container');
 carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlide));
 carouselContainer.addEventListener('mouseleave', () => resetTimer());
