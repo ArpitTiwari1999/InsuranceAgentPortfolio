@@ -91,3 +91,57 @@ hoverTriggers.forEach(trigger => {
         cursor.classList.remove('grow');
     });
 });
+// --- Carousel Logic ---
+
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(track.children);
+const nextButton = document.querySelector('.next-btn');
+const prevButton = document.querySelector('.prev-btn');
+
+let slideIndex = 0;
+const slideWidth = slides[0].getBoundingClientRect().width;
+
+// Arrange slides next to one another
+// (This is handled by CSS flex, but this ensures logical sizing)
+const setSlidePosition = (slide, index) => {
+    slide.style.left = slideWidth * index + 'px';
+};
+
+const moveToSlide = (index) => {
+    // Check bounds
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    
+    // Move track
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
+    slideIndex = index;
+};
+
+// Button Listeners
+nextButton.addEventListener('click', () => {
+    moveToSlide(slideIndex + 1);
+    resetTimer(); // Reset auto-play timer on manual click
+});
+
+prevButton.addEventListener('click', () => {
+    moveToSlide(slideIndex - 1);
+    resetTimer();
+});
+
+// Auto Rotation (Every 4 seconds)
+let autoSlide = setInterval(() => {
+    moveToSlide(slideIndex + 1);
+}, 4000);
+
+// Function to reset timer when user interacts
+function resetTimer() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => {
+        moveToSlide(slideIndex + 1);
+    }, 4000);
+}
+
+// Pause rotation on hover (Better User Experience)
+const carouselContainer = document.querySelector('.carousel-container');
+carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlide));
+carouselContainer.addEventListener('mouseleave', () => resetTimer());

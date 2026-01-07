@@ -128,3 +128,73 @@ select#language-toggle option { background: var(--bg-main); color: var(--text-pr
     .photo-block { grid-column: span 1; height: 300px; }
     .nav-links { display: none; } /* On mobile, keep it simple for now */
 }
+/* --- Carousel Styling --- */
+
+/* Reset the photo block to hold the slider */
+.photo-block {
+    padding: 0; /* Remove padding so images touch edges */
+    position: relative;
+    overflow: hidden; /* Hide images waiting off-screen */
+}
+
+/* The track that slides left/right */
+.carousel-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Individual Slides */
+.carousel-slide {
+    min-width: 100%; /* Each slide takes full width of the box */
+    height: 100%;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers area without stretching */
+    display: block;
+    filter: brightness(0.7); /* Darken slightly so text is readable */
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--accent-gold);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    opacity: 0; /* Hidden by default */
+}
+
+/* Show buttons when hovering over the photo block */
+.photo-block:hover .carousel-btn {
+    opacity: 1;
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
+.carousel-btn:hover {
+    background: var(--accent-gold);
+    color: #000;
+}
+
+/* Ensure overlay text stays on top */
+.photo-block .overlay-text {
+    z-index: 20;
+    pointer-events: none; /* Let clicks pass through text to buttons/images */
+}
