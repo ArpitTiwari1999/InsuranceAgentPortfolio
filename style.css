@@ -95,7 +95,7 @@ select#language-toggle option { background: var(--bg-main); color: var(--text-pr
 .testimonial-scroller { display: flex; gap: 30px; overflow-x: auto; padding-bottom: 30px; scrollbar-width: none; }
 .testimonial-card { min-width: 400px; background-color: var(--bg-secondary); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
 .client-info { display: flex; align-items: center; gap: 15px; margin-top: 20px;}
-.client-info img { border-radius: 50%; }
+.client-info img { width: 8%; }
 
 /* Contact Section (Split Layout) */
 .contact-container { display: flex; gap: 50px; flex-wrap: wrap;}
